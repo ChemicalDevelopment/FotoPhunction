@@ -9,7 +9,7 @@ Template.example.events({
     'click .takePhoto': function(event, template) {
         var cameraOptions = {
             width: 800,
-            height: 600
+            height: 800
         };
         MeteorCamera.getPicture(cameraOptions, function (error, data) {
            if (!error) {

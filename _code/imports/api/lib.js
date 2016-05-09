@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor';
 find_patterns = function(canvas) {
 	var i, j;
 	var context = canvas.getContext('2d');
-	var imageData = context.getImageData(0, 0, 800, 600);
+	var imageData = context.getImageData(0, 0, 800, 800);
     var data = imageData.data;
     var red_x = [];
     var red_y = [];
@@ -16,35 +16,44 @@ find_patterns = function(canvas) {
 		var r = data[i];
 		var g = data[i+1];
 		var b = data[i+2];
-		if (1.1 * r > g + b) {
+		if (1.8 * r > g + b) {
 			var _x = Math.floor(_pix % 800);
-			var _y = 800 - Math.floor(_pix / 600);
+			var _y = Math.floor(_pix / 800);
 			var do_push = 1;
 			for (j = 0; j < red_y.length; ++j) {
-				if (red_y[j] < _y && red_x[j] == _x) {
-					data[4 * j] = 0;
+				if (red_y[j] > _y && red_x[j] == _x) {
+					data[4 * j] += 50;
+          data[4 * j + 2] -= 25;
 					red_y[j] = _y;
-					do_push = 0;
+					do_push = 1;
 				}
 			}
 			if (do_push == 1) {
 				red_x.push(_x);
 				red_y.push(_y);
-				data[i] = 255;
+				data[i + 2] += 25;
+        data[i] -= 50;
 			}
-		} else {
-			data[i] = 0;
 		}
 	}
 	//Line of best fit ax + b = y
-	var _fit = regress_leastsquares(red_x, red_y);
+	var _fit = regress_leastsquares_linear(red_x, red_y);
 	console.log(_fit);
 	imageData.data = data;
 	context.putImageData(imageData, 0, 0);
+
+  context.beginPath();
+  var begin = _fit.a * 0 + _fit.b;
+  var end = _fit.a * 800 + _fit.b;
+  context.strokeStyle = "rgba(200, 0, 0, 0.4)";
+  context.lineWidth= 6;
+  context.moveTo(0, begin);
+  context.lineTo(800, end);
+  context.stroke();
 }
 
 //Line of best fit
-function regress_leastsquares(X, Y) {
+function regress_leastsquares_linear(X, Y) {
    	var sum_x = 0;
    	var sum_y = 0;
    	var sum_xy = 0;
@@ -60,11 +69,27 @@ function regress_leastsquares(X, Y) {
    	var a, b = 0;
    	a = (l * sum_xy - sum_x * sum_y) / _div;
    	b = (sum_y * sum_x2 - sum_x * sum_xy) / _div;
+    var ss_res = 0;
+    var ss_tot = 0;
+    var y_m = 0;
+    for (var i = 0; i < l; ++i) {
+      y_m += Y[i];
+    }
+    y_m /= l;
+    for (var i = 0; i < l; ++i) {
+      ss_res += (Y[i] - (a * X[i] + b)) * (Y[i] - (a * X[i] + b));
+      ss_tot += (Y[i] - y_m) * (Y[i] - y_m);
+    }
    	return {
    		a: a,
    		b: b,
-   		r: 	0
+   		r: Math.sqrt(1 - ss_res / ss_tot),
    	};
+}
+
+
+function regress_leastsquares_exp(X, Y) {
+
 }
 
 
