@@ -4,18 +4,43 @@ import { Meteor } from 'meteor/meteor';
 //External function that handles all the mathematical fitting, and such
 //Right now, we log all the patterns it finds
 find_patterns = function(canvas) {
-	var x, y;
+	var i;
 	var context = canvas.getContext('2d');
 	var imageData = context.getImageData(0, 0, 800, 600);
     var data = imageData.data;
+    var red_array = [];
     //Colors according to primality
-	for (x = 0; x < data.length; x += 4) {
-		data[x] = isprime(data[x]) * 255;
-		data[x+1] = isprime(data[x + 1]) * 255;
-		data[x+2] = isprime(data[x + 2]) * 255;
+	for (i = 0; i < data.length; i += 4) { //RGBA format
+		var _pix = Math.floor(i / 4);
+		var r = data[i];
+		var g = data[i+1];
+		var b = data[i+2];
+		if (1.1 * r > g + b)	 {
+			data[i] = 255;
+			data[i + 1] = 0;
+			data[i + 2] = 0;
+			red_array.push({
+				x: Math.floor(_pix % 800),
+				y: Math.floor((_pix / 600)),
+			});
+		} else {
+			data[i] = 0;
+			data[i + 1] = 0;
+			data[i + 2] = 0;
+		}	
 	}
+	var avg_red_pixel = [0, 0];
+	for (i = 0; i < red_array.length; ++i) {
+		avg_red_pixel[0] += red_array[i].x / red_array.length;
+		avg_red_pixel[1] += red_array[i].y / red_array.length;
+	}
+	avg_red_pixel[0] %= 800;
+	avg_red_pixel[1] -= 600 / 4;
+	avg_red_pixel[1] %= 600;
 	imageData.data = data;
 	context.putImageData(imageData, 0, 0);
+	context.fillStyle = "#00FF00";
+	context.fillRect(avg_red_pixel[0] - 5, avg_red_pixel[1] - 5 , 10, 10);
 }
 
 /*
