@@ -9,15 +9,12 @@ find_patterns = function(canvas) {
 	var imageData = context.getImageData(0, 0, 800, 600);
     var data = imageData.data;
 	for (x = 0; x < data.length; x += 4) {
-		data[x] = 255 - data[x];
-		data[x+1] = 255 - data[x+1];
-		data[x+1] = 255 - data[x+2];
+		data[x] = isprime(data[x]) * 255;
+		data[x+1] = isprime(data[x + 1]) * 255;
+		data[x+1] = isprime(data[x + 2]) * 255;
 	}
 	imageData.data = data;
 	context.putImageData(imageData, 0, 0);
-	/*context.fillStyle = "#FF0000";
-	context.fillRect(0,0,150,75);*/
-
 }
 
 /*
