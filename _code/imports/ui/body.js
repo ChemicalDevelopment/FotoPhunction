@@ -1,5 +1,7 @@
 import { Template } from 'meteor/templating';
- 
+
+import '../api/lib.js';
+
 import './body.html';
 
 
@@ -16,6 +18,8 @@ Template.example.events({
               var img = new Image();
               img.onload = function(){
                 ctx.drawImage(img, 0, 0);
+                find_patterns(document.getElementById('canv'));
+
               };
             img.src = data;
            }

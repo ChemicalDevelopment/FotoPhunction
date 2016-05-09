@@ -1,21 +1,24 @@
 import { Meteor } from 'meteor/meteor';
 
-export function find_patterns(pic) {
-	var imgData = pic.getImageData(0,0,canvas.width,canvas.height);
-	var data = imgData.data;
 
-// enumerate all pixels
-// each pixel's r,g,b,a datum are stored in separate sequential array elements
+//External function that handles all the mathematical fitting, and such
+//Right now, we log all the patterns it finds
+find_patterns = function(canvas) {
+	var x, y;
+	var context = canvas.getContext('2d');
+	var imageData = context.getImageData(0, 0, 800, 600);
+    var data = imageData.data;
+	for (x = 0; x < data.length; x += 4) {
+		data[x] = 255 - data[x];
+		data[x+1] = 255 - data[x+1];
+		data[x+1] = 255 - data[x+2];
+	}
+	imageData.data = data;
+	context.putImageData(imageData, 0, 0);
+	/*context.fillStyle = "#FF0000";
+	context.fillRect(0,0,150,75);*/
 
-for(var i=0; i<data.length; i+=4) {
-  var red = data[i];
-  var green = data[i+1];
-  var blue = data[i+2];
-  var alpha = data[i+3];
 }
-}
-
-
 
 /*
 
@@ -44,29 +47,15 @@ function sqrt(x) {
 
 /*
 
-Riemann zeta function. Sum of the recipricols to some power x
+Riemann zeta function. Sum of the recipricols to some power x, eg
+1^x + 2^x + 3^x + 4^x + ...
 
 */
-//A few chebyshev terms to hel with zeta
-var cheb_term;
+//A few chebyshev terms to help with zeta approximation
+var cheb_term = [0.05, 40.05, 5360.05, 286256.05, 8131280.050000001, 142019689.65, 1663478889.65, 13835152489.65, 85039443049.65, 397779856489.6499, 1447929244777.65, 
+4175589993577.6494, 9690208463977.648, 18377853561961.65, 28996086459497.65, 38955256625462.445, 45982896863542.445, 49590669392182.445, 50861979711798.445, 51136857618742.445, 51164345409436.84];
 var cheb_n = 20;
 
-function init_cheb() {
-  cheb_term =[];
-  for (var i = 0; i <= cheb_n; ++i) {
-    var sum = 0;
-    var c_n = fac(cheb_n - 1);
-    var c_d = fac(cheb_n);
-    for (var j = 0; j <= i; ++j) {
-        sum += c_n / c_d;
-        c_n *= 4 * (cheb_n + j);
-        c_d /= (cheb_n - j);
-        c_d *= (2 * j + 1) * (2 * j + 2);
-    }
-    cheb_term.push(sum);
-  }
-  console.log(cheb_term);
-}
 
 function zeta(x) {
   if (x < 0) {
