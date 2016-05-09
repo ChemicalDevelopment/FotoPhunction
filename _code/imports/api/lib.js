@@ -4,44 +4,70 @@ import { Meteor } from 'meteor/meteor';
 //External function that handles all the mathematical fitting, and such
 //Right now, we log all the patterns it finds
 find_patterns = function(canvas) {
-	var i;
+	var i, j;
 	var context = canvas.getContext('2d');
 	var imageData = context.getImageData(0, 0, 800, 600);
     var data = imageData.data;
-    var red_array = [];
+    var red_x = [];
+    var red_y = [];
     //Colors according to primality
 	for (i = 0; i < data.length; i += 4) { //RGBA format
 		var _pix = Math.floor(i / 4);
 		var r = data[i];
 		var g = data[i+1];
 		var b = data[i+2];
-		if (1.1 * r > g + b)	 {
-			data[i] = 255;
-			data[i + 1] = 0;
-			data[i + 2] = 0;
-			red_array.push({
-				x: Math.floor(_pix % 800),
-				y: Math.floor((_pix / 600)),
-			});
+		if (1.1 * r > g + b) {
+			var _x = Math.floor(_pix % 800);
+			var _y = 800 - Math.floor(_pix / 600);
+			var do_push = 1;
+			for (j = 0; j < red_y.length; ++j) {
+				if (red_y[j] < _y && red_x[j] == _x) {
+					data[4 * j] = 0;
+					red_y[j] = _y;
+					do_push = 0;
+				}
+			}
+			if (do_push == 1) {
+				red_x.push(_x);
+				red_y.push(_y);
+				data[i] = 255;
+			}
 		} else {
 			data[i] = 0;
-			data[i + 1] = 0;
-			data[i + 2] = 0;
-		}	
+		}
 	}
-	var avg_red_pixel = [0, 0];
-	for (i = 0; i < red_array.length; ++i) {
-		avg_red_pixel[0] += red_array[i].x / red_array.length;
-		avg_red_pixel[1] += red_array[i].y / red_array.length;
-	}
-	avg_red_pixel[0] %= 800;
-	avg_red_pixel[1] -= 600 / 4;
-	avg_red_pixel[1] %= 600;
+	//Line of best fit ax + b = y
+	var _fit = regress_leastsquares(red_x, red_y);
+	console.log(_fit);
 	imageData.data = data;
 	context.putImageData(imageData, 0, 0);
-	context.fillStyle = "#00FF00";
-	context.fillRect(avg_red_pixel[0] - 5, avg_red_pixel[1] - 5 , 10, 10);
 }
+
+//Line of best fit
+function regress_leastsquares(X, Y) {
+   	var sum_x = 0;
+   	var sum_y = 0;
+   	var sum_xy = 0;
+   	var sum_x2 = 0;
+   	var l = X.length;
+   	for (var i = 0; i < l; ++i) {
+   		sum_x += X[i];
+   		sum_y += Y[i];
+   		sum_xy += X[i] * Y[i];
+   		sum_x2 += X[i] * X[i];
+   	}
+   	var _div = (l * sum_x2 - sum_x * sum_x);
+   	var a, b = 0;
+   	a = (l * sum_xy - sum_x * sum_y) / _div;
+   	b = (sum_y * sum_x2 - sum_x * sum_xy) / _div;
+   	return {
+   		a: a,
+   		b: b,
+   		r: 	0
+   	};
+}
+
+
 
 /*
 
