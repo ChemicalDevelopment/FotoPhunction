@@ -8,10 +8,11 @@ find_patterns = function(canvas) {
 	var context = canvas.getContext('2d');
 	var imageData = context.getImageData(0, 0, 800, 600);
     var data = imageData.data;
+    //Colors according to primality
 	for (x = 0; x < data.length; x += 4) {
 		data[x] = isprime(data[x]) * 255;
 		data[x+1] = isprime(data[x + 1]) * 255;
-		data[x+1] = isprime(data[x + 2]) * 255;
+		data[x+2] = isprime(data[x + 2]) * 255;
 	}
 	imageData.data = data;
 	context.putImageData(imageData, 0, 0);
@@ -78,11 +79,11 @@ function zeta(x) {
 Euler's gamma function. gamma(x) = (x-1)!
 
 */
-function gamma(x) {
-  if (x <3) {
-    return gamma(x + 1) / (x);
+function gamma(i) {
+  if (i <3 /* you */) {
+    return gamma(i + 1) / (i);
   }
-  return Math.exp(x * Math.log(x) - x - (Math.log(x  / (2 * pi))) / 2 + 1 / (12 * x) - 1 / (360 * x * x * x) + 1 / (1260 * x * x * x * x * x));
+  return Math.exp(i * Math.log(i) - i - (Math.log(i  / (2 * pi))) / 2 + 1 / (12 * i) - 1 / (360 * i * i * i) + 1 / (1260 * i * i * i * i * i));
 }
 
 
