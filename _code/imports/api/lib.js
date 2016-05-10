@@ -44,7 +44,7 @@ find_patterns = function(canvas) {
   context.beginPath();
   var begin = _fit.a * 0 + _fit.b;
   var end = _fit.a * 800 + _fit.b;
-  context.strokeStyle = "rgba(200, 0, 0, 0.4)";
+  context.strokeStyle = "rgba(0, 0, 255, 0.4)";
   context.lineWidth= 6;
   context.moveTo(0, begin);
   context.lineTo(800, end);
