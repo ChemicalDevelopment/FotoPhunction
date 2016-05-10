@@ -69,7 +69,8 @@ find_patterns = function(canvas) {
   //Calculate f(0) and f(max) and draw a line through
   var begin = _fit.a * 0 + _fit.b;
   var end = _fit.a * width + _fit.b;
-  context.strokeStyle = "rgba(0, 0, 120, 0.6)";
+  context.setLineDash([10, 4]);
+  context.strokeStyle = "rgba(120, 0, 00, 0.6)";
   //A bit thick
   context.lineWidth= 6;
   //Move it and fill
