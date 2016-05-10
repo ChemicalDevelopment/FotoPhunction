@@ -10,6 +10,7 @@ find_patterns = function(canvas) {
     var data = imageData.data;
     var red_x = [];
     var red_y = [];
+    var x_plotted = [];
     //Colors according to primality
 	for (i = 0; i < data.length; i += 4) { //RGBA format
 		var _pix = Math.floor(i / 4);
@@ -20,19 +21,17 @@ find_patterns = function(canvas) {
 			var _x = Math.floor(_pix % 800);
 			var _y = Math.floor(_pix / 800);
 			var do_push = 1;
-			for (j = 0; j < red_y.length; ++j) {
-				if (red_y[j] > _y && red_x[j] == _x) {
-					data[4 * j] += 50;
-          data[4 * j + 2] -= 25;
-					red_y[j] = _y;
-					do_push = 1;
-				}
+			for (j = 0; j < red_x.length; ++j) {
+        if (red_x[j] == _x) {
+          do_push = 0;
+          break;
+        }
 			}
 			if (do_push == 1) {
+        data[i] /= 4;
+        data[i + 1] *= 4;
 				red_x.push(_x);
 				red_y.push(_y);
-				data[i + 2] += 25;
-        data[i] -= 50;
 			}
 		}
 	}
