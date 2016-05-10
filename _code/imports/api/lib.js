@@ -6,7 +6,7 @@ import { Meteor } from 'meteor/meteor';
 find_patterns = function(canvas) {
 	var i, j;
 	var context = canvas.getContext('2d');
-	var imageData = context.getImageData(0, 0, 800, 800);
+	var imageData = context.getImageData(0, 0, width, height);
     var data = imageData.data;
     var red_x = [];
     var red_y = [];
@@ -18,8 +18,8 @@ find_patterns = function(canvas) {
 		var g = data[i+1];
 		var b = data[i+2];
 		if (1.8 * r > g + b) {
-			var _x = Math.floor(_pix % 800);
-			var _y = Math.floor(_pix / 800);
+			var _x = Math.floor(_pix % width);
+			var _y = Math.floor(_pix / width);
 			var do_push = 1;
 			for (j = 0; j < red_x.length; ++j) {
         if (red_x[j] == _x) {
@@ -43,11 +43,11 @@ find_patterns = function(canvas) {
 
   context.beginPath();
   var begin = _fit.a * 0 + _fit.b;
-  var end = _fit.a * 800 + _fit.b;
+  var end = _fit.a * width + _fit.b;
   context.strokeStyle = "rgba(0, 0, 255, 0.4)";
   context.lineWidth= 6;
   context.moveTo(0, begin);
-  context.lineTo(800, end);
+  context.lineTo(width, end);
   context.stroke();
 }
 
