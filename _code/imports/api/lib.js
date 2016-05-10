@@ -5,53 +5,80 @@ import { Meteor } from 'meteor/meteor';
 //Right now, we log all the patterns it finds
 find_patterns = function(canvas) {
 	var i, j;
+  //Ge context from canvas
 	var context = canvas.getContext('2d');
+  //Get the raw data to search
 	var imageData = context.getImageData(0, 0, width, height);
-    var data = imageData.data;
-    var red_x = [];
-    var red_y = [];
-    var x_plotted = [];
-    //Colors according to primality
-	for (i = 0; i < data.length; i += 4) { //RGBA format
+  //Actual stream
+  var data = imageData.data;
+  //Arrays for red pixels (x, y)
+  var red_x = [];
+  var red_y = [];
+
+  //Loop through
+	for (i = 0; i < data.length; i += 4) { //RGBA format R, G, B, A, R, G, B, A, so we have to skip
+    //Pixel arra if it were not in multiples of four
 		var _pix = Math.floor(i / 4);
+    //Read in varaibles 
 		var r = data[i];
 		var g = data[i+1];
 		var b = data[i+2];
-		if (1.8 * r > g + b) {
+    //See if it is mostly red
+		if (1.5 * r > g + b) {
 			var _x = Math.floor(_pix % width);
 			var _y = Math.floor(_pix / width);
+      //By default, we want to create a new point in the arrays, but we should take the highest value
 			var do_push = 1;
+      //We dont have to check Y's because the img is stored as:
+      /*
+      0, 1, 2, 3, 4, ...
+      800, 801, 802, ...
+      1600, 1601, ...
+      2400, ...
+      . ...
+      .
+      .
+      */
 			for (j = 0; j < red_x.length; ++j) {
+        //If we find an x has already been associated with a y
         if (red_x[j] == _x) {
           do_push = 0;
           break;
         }
 			}
+      //If we still need to create a new listing
 			if (do_push == 1) {
-        data[i] /= 4;
-        data[i + 1] *= 4;
 				red_x.push(_x);
 				red_y.push(_y);
 			}
-		}
+		} else {
+      //We dim all others just a bit
+      data[i + 3] = 180;
+    }
 	}
 	//Line of best fit ax + b = y
 	var _fit = regress_leastsquares_linear(red_x, red_y);
+  //We log out a few things
 	console.log(_fit);
+  //We put the altered data back in
 	imageData.data = data;
+  //We write to the canvas
 	context.putImageData(imageData, 0, 0);
-
+  //To draw a line through the image
   context.beginPath();
+  //Calculate f(0) and f(max) and draw a line through
   var begin = _fit.a * 0 + _fit.b;
   var end = _fit.a * width + _fit.b;
-  context.strokeStyle = "rgba(0, 0, 255, 0.4)";
+  context.strokeStyle = "rgba(0, 0, 120, 0.6)";
+  //A bit thick
   context.lineWidth= 6;
+  //Move it and fill
   context.moveTo(0, begin);
   context.lineTo(width, end);
   context.stroke();
 }
 
-//Line of best fit
+//Line of best fit, classic method
 function regress_leastsquares_linear(X, Y) {
    	var sum_x = 0;
    	var sum_y = 0;

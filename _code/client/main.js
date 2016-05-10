@@ -4,6 +4,7 @@ import '../imports/ui/body.js';
 import './main.html';
 
 
+//these functions are for html accessing width and height
 Template.registerHelper('width', function() {
    return width;
 });
@@ -11,20 +12,3 @@ Template.registerHelper('width', function() {
 Template.registerHelper('height', function() {
    return height;
 });
-
-
-/*
-
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
-  },
-});
-
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
-});
-*/
