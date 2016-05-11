@@ -24,7 +24,7 @@ find_patterns = function(canvas) {
 		var g = data[i+1];
 		var b = data[i+2];
     //See if it is mostly red
-		if (1.5 * r > g + b) {
+		if (1.5 * r > g + b && r > 80) {
 			var _x = Math.floor(_pix % width);
 			var _y = Math.floor(_pix / width);
       //By default, we want to create a new point in the arrays, but we should take the highest value
@@ -57,9 +57,8 @@ find_patterns = function(canvas) {
     }
 	}
 	//Line of best fit ax + b = y
-	var _fit = regress_leastsquares_linear(red_x, red_y);
-  //We log out a few things
-	console.log(_fit);
+  var _fit = regress_leastsquares_linear(red_x, red_y);
+  var _fit_log = regress_leastsquares_log(red_x, red_y);
   //We put the altered data back in
 	imageData.data = data;
   //We write to the canvas
@@ -70,16 +69,26 @@ find_patterns = function(canvas) {
   var begin = _fit.a * 0 + _fit.b;
   var end = _fit.a * width + _fit.b;
   context.setLineDash([10, 4]);
-  context.strokeStyle = "rgba(120, 0, 00, 0.6)";
+  context.strokeStyle = "rgba(120, 0, 0, 0.6)";
   //A bit thick
-  context.lineWidth= 6;
+  context.lineWidth = 6;
   //Move it and fill
   context.moveTo(0, begin);
   context.lineTo(width, end);
   context.stroke();
+  var z = 0;
+  var _s, _e;
+  _s = _fit_log.a * Math.log(z + 1) + _fit_log.b;
+  for (z = 1; z < 800; ++z) {
+    _e = _fit_log.a * Math.log(z + 1) + _fit_log.b;
+    context.moveTo(z - 1, _s);
+    context.lineTo(z, _e);
+    context.stroke();
+    _s = _fit_log.a * Math.log(z + 1) + _fit_log.b;
+  }
 }
 
-//Line of best fit, classic method
+//Line of best fit, classic method  
 function regress_leastsquares_linear(X, Y) {
    	var sum_x = 0;
    	var sum_y = 0;
@@ -115,10 +124,14 @@ function regress_leastsquares_linear(X, Y) {
 }
 
 
-function regress_leastsquares_exp(X, Y) {
-
+//Line of best fit, logarithmic y ~ aln(X) + b
+function regress_leastsquares_log(X, Y) {
+    var ln_X = [];
+    for (var i = 0; i < X.length; ++i)
+      ln_X.push(Math.log(X[i] + 1));
+    }
+    return regress_leastsquares_linear(ln_X, Y);
 }
-
 
 
 /*
