@@ -1,9 +1,13 @@
 import { Meteor } from 'meteor/meteor';
 
+import { regression } from"./regression.js";
 
 //External function that handles all the mathematical fitting, and such
 //Right now, we log all the patterns it finds
 find_patterns = function(canvas) {
+  var _lin_col = "rgba(0, 200, 50, .7)"
+  var _qua_col = "rgba(0, 200, 200, .7)"
+  var _log_col = "rgba(0, 20, 170, .5)"
 	var i, j;
   //Ge context from canvas
 	var context = canvas.getContext('2d');
@@ -14,6 +18,9 @@ find_patterns = function(canvas) {
   //Arrays for red pixels (x, y)
   var red_x = [];
   var red_y = [];
+
+  //How many to to run through? Only check every nth pixel
+  var _skip = 1;
 
   //Loop through
 	for (i = 0; i < data.length; i += 4) { //RGBA format R, G, B, A, R, G, B, A, so we have to skip
@@ -53,14 +60,69 @@ find_patterns = function(canvas) {
 			}
 		} else {
       //We dim all others just a bit
-      data[i + 3] = 180;
+      data[i + 3] = 0;
     }
 	}
 	//Line of best fit ax + b = y
-  var _fit = regress_leastsquares_linear(red_x, red_y);
+  var _data_format = [];
+  for (i = 0; i < red_x.length; ++i) {
+    _data_format.push([red_x[i], red_y[i]]);
+  }
+  //var _lin_fit = regression('line', _data_format, 1);
+  var _qua_fit = regression('pol', _data_format, 2);
+  /*console.log("Linear Fit: ");
+  console.log(_lin_fit);*/
+  console.log("Quadratic Fit: ");
+  console.log(_qua_fit);
+  imageData.data = data;
+
+  /*context.beginPath();
+
+  context.lineWidth = 6;
+  context.setLineDash([10, 4]);
+
+
+  context.strokeStyle = _lin_col;
+
+  var x, _ev_l, _ev;
+  _ev_l = _lin_fit.equation[0] * (c) + _lin_fit.equation[1];
+  for (x = c; x < width; x += c) {
+    _ev = _lin_fit.equation[0] * (x + c) + _lin_fit.equation[1];
+    context.moveTo(x, _ev_l);
+    context.lineTo(x, _ev);
+    context.stroke();
+    _ev_l = _ev;
+  }*/
+
+  var c = 1;
+
+
+  context.strokeStyle = _lin_col;
+
+  context.beginPath();
+  //context.moveTo(0, 0);
+
+  _ev_l = eval_qua(_qua_fit.equation, 0);
+  for (var x = c; x < width; x += c) {
+    _ev = eval_qua(_qua_fit.equation, x);
+    context.moveTo(x, _ev_l);
+    context.lineTo(x, _ev);
+    context.stroke();
+    _ev_l = _ev;
+  }
+
+  /*for (x = c; x < width; ++x) {
+    _ev = _qua_fit.equation[0] * (x + c) * (x + c) + _qua_fit.equation[1] * (x + c) + _qua_fit.equation[2];
+    context.moveTo(x, _ev_l);
+    context.lineTo(x, _ev);
+    context.stroke();
+    _ev_l = _ev;
+  }*/
+
+  /*var _fit = regress_leastsquares_linear(red_x, red_y);
   var _fit_log = regress_leastsquares_log(red_x, red_y);
   //We put the altered data back in
-	imageData.data = data;
+  imageData.data = data;
   //We write to the canvas
 	context.putImageData(imageData, 0, 0);
   //To draw a line through the image
@@ -69,23 +131,31 @@ find_patterns = function(canvas) {
   var begin = _fit.a * 0 + _fit.b;
   var end = _fit.a * width + _fit.b;
   context.setLineDash([10, 4]);
-  context.strokeStyle = "rgba(120, 0, 0, 0.6)";
+  context.strokeStyle = _lin_col;
   //A bit thick
   context.lineWidth = 6;
   //Move it and fill
   context.moveTo(0, begin);
   context.lineTo(width, end);
   context.stroke();
+  context.strokeStyle = _log_col;
+  context.setLineDash([10, 4]);
+  context.beginPath();
   var z = 0;
   var _s, _e;
+  var _c = 14;
   _s = _fit_log.a * Math.log(z + 1) + _fit_log.b;
-  for (z = 1; z < 800; ++z) {
-    _e = _fit_log.a * Math.log(z + 1) + _fit_log.b;
-    context.moveTo(z - 1, _s);
+  for (z = _c; z < width; z += _c) {
+    _e = _fit_log.a * Math.log(z + _c + 1) + _fit_log.b;
+    context.moveTo(z - _c, _s);
     context.lineTo(z, _e);
     context.stroke();
-    _s = _fit_log.a * Math.log(z + 1) + _fit_log.b;
-  }
+    _s = _fit_log.a * Math.log(z + _c) + _fit_log.b;
+  }*/
+}
+
+function eval_qua(coef, x) {
+  return coef[0] + coef[1] * x + coef[2] * x * x;
 }
 
 //Line of best fit, classic method  
@@ -127,11 +197,31 @@ function regress_leastsquares_linear(X, Y) {
 //Line of best fit, logarithmic y ~ aln(X) + b
 function regress_leastsquares_log(X, Y) {
     var ln_X = [];
-    for (var i = 0; i < X.length; ++i)
+    for (var i = 0; i < X.length; ++i) {
       ln_X.push(Math.log(X[i] + 1));
     }
     return regress_leastsquares_linear(ln_X, Y);
 }
+
+
+/*
+
+Full out regression class I found
+
+*/
+
+/**
+* @license
+*
+* Regression.JS - Regression functions for javascript
+* http://tom-alexander.github.com/regression-js/
+*
+* copyright(c) 2013 Tom Alexander
+* Licensed under the MIT license.
+*
+**/
+
+
 
 
 /*
