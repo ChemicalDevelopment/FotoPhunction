@@ -11,9 +11,7 @@ find_patterns = function(canvas, _color, _slop) {
       arr_color.push(parseInt(_color.substring(2 * i + 1, 2 * i + 3), 16));
   }
   console.log(arr_color);
-  var _lin_col = "rgba(0, 200, 50, .7)";
-  var _qua_col = "rgba(0, 200, 200, .7)";
-  var _log_col = "rgba(0, 20, 170, .5)";
+  var _pol_col = "rgba(0, 200, 200, 1.0)";
   //Ge context from canvas
 	var context = canvas.getContext('2d');
   //Get the raw data to search
@@ -76,29 +74,28 @@ find_patterns = function(canvas, _color, _slop) {
   for (i = 0; i < red_x.length; ++i) {
     _data_format.push([red_x[i], red_y[i]]);
   }
-  //var _lin_fit = regression('line', _data_format, 1);
-  var _qua_fit = regression('pol', _data_format, 8);
-  /*console.log("Linear Fit: ");
-  console.log(_lin_fit);*/
+  var _pol_fit = regression('pol', _data_format, 8);
   console.log("Poly Fit: ");
-  console.log(_qua_fit);
+  console.log(_pol_fit);
 
 
   imageData.data = data;
 
   context.putImageData(imageData, 0, 0);
 
-  var c = 2;
+  var c = 1;
 
 
-  context.strokeStyle = _lin_col;
+  context.strokeStyle = _pol_col;
+
+  context.lineWidth = 6;
 
   context.beginPath();
   //context.moveTo(0, 0);
 
-  _ev_l = eval_pol(_qua_fit.equation, 0);
+  _ev_l = eval_pol(_pol_fit.equation, 0);
   for (var x = c; x < width; x += c) {
-    _ev = eval_pol(_qua_fit.equation, x);
+    _ev = eval_pol(_pol_fit.equation, x);
     context.moveTo(x, _ev_l);
     context.lineTo(x, _ev);
     context.stroke();

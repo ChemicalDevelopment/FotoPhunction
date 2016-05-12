@@ -1,8 +1,4 @@
 /* CSS */
-
-/*
-
-
 body {
   background-color: #315481;
   background-image: linear-gradient(to bottom, #315481, #918e82 100%);
@@ -181,8 +177,7 @@ header .hide-completed {
 }
 
 html *
-{
-   font-size: 1.2em !important;
+   font-size: 1.4em !important;
    font-family: "Times New Roman", Times, serif !important;
 }
 
@@ -202,4 +197,13 @@ input[type=number]{
    margin-top: -15%;
 }
 
-*/
+input[type="color"] {
+    height: 30px;
+}
+input[type="number"] {
+    height: 30px;
+}
+
+.settings-text {
+  color: white;
+}

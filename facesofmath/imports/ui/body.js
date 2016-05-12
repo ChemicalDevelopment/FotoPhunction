@@ -23,7 +23,8 @@ export function update() {
     if (Meteor.Device.isDesktop()) {
       myCanvas.style.width = "55%";
       myCanvas.style.height = 'auto';
-      myCanvas.style.left = ((window.width) / 2 + width / 6 + 256) + "px";
+      myCanvas.style.left = ((window.width + width) / 2 + 90) + "px";
+      myCanvas.style.top = 180 + "px";
     } else {
       myCanvas.style.width = "95%";
       myCanvas.style.height = 'auto';

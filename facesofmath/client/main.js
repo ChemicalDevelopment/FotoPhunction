@@ -1,7 +1,9 @@
 import { Template } from 'meteor/templating';
+
 import { ReactiveVar } from 'meteor/reactive-var';
+
 import '../imports/ui/body.js';
-import './main.html';
+//import './main.html';
 
 
 //these functions are for html accessing width and height

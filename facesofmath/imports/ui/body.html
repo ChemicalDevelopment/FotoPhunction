@@ -1,26 +1,18 @@
 <body>
-  <div class="container">
-    <header>
-      <h1 align="center">Faces Of Math</h1>
-    </header>
-      {{> example }}
-  </div>
+  <nav class="navbar navbar-inverse">
+    <a class="navbar-brand" href="#">Faces Of Math</a>
+  </nav>
+  {{> example }}
 </body>
 
 
+
 <template name="example">
-  <!-- Our font -->
-  <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
-
-  <!-- <a href="#" class="center takePhoto button">
-    <span>Take A Photo</span>
-  </a> -->
-
   <button class="takePhoto center">
     <span>Take A Photo</span>
   </button><br><br>
-  Color: <input type="color" id="color" value="#ff0000"><br><br>
-  Slop: <input size="35" type="number" id="slop" value="50"><br><br>
+  <input type="color" id="color" value="#1c1c1c"><br>
+  <div class="settings-text">Slop: </div><input size="10" type="number" id="slop" value="50"><br>
   <button class="center">
     <span>Update Settings</span>
   </button>
