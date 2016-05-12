@@ -1,4 +1,8 @@
 /* CSS */
+
+/*
+
+
 body {
   background-color: #315481;
   background-image: linear-gradient(to bottom, #315481, #918e82 100%);
@@ -26,12 +30,11 @@ body {
   margin: 0 auto;
   min-height: 100%;
   
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ebf1f6+0,abd3ee+50,89c3eb+51,d5ebfb+100;Blue+Gloss+%234 */
-background: #ebf1f6; /* Old browsers */
-background: -moz-linear-gradient(top, #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 ); /* IE6-9 */
+background: #ebf1f6;
+background: -moz-linear-gradient(top, #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%);
+background: -webkit-linear-gradient(top, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
+background: linear-gradient(to bottom, #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%); 
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 );
 
 
 }
@@ -39,11 +42,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', end
 header {
   padding: 20px 15px 15px 15px;
   position: relative;
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#1e5799+20,2989d8+50,1e5799+80&0+0,0.8+15,1+19,1+81,0.8+85,0+100;Blue+Two+Sided+Transparent */
-background: -moz-linear-gradient(top,  rgba(30,87,153,0) 0%, rgba(30,87,153,0.8) 15%, rgba(30,87,153,1) 19%, rgba(30,87,153,1) 20%, rgba(41,137,216,1) 50%, rgba(30,87,153,1) 80%, rgba(30,87,153,1) 81%, rgba(30,87,153,0.8) 85%, rgba(30,87,153,0) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  rgba(30,87,153,0) 0%,rgba(30,87,153,0.8) 15%,rgba(30,87,153,1) 19%,rgba(30,87,153,1) 20%,rgba(41,137,216,1) 50%,rgba(30,87,153,1) 80%,rgba(30,87,153,1) 81%,rgba(30,87,153,0.8) 85%,rgba(30,87,153,0) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  rgba(30,87,153,0) 0%,rgba(30,87,153,0.8) 15%,rgba(30,87,153,1) 19%,rgba(30,87,153,1) 20%,rgba(41,137,216,1) 50%,rgba(30,87,153,1) 80%,rgba(30,87,153,1) 81%,rgba(30,87,153,0.8) 85%,rgba(30,87,153,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#001e5799', endColorstr='#001e5799',GradientType=0 ); /* IE6-9 */
+background: -moz-linear-gradient(top,  rgba(30,87,153,0) 0%, rgba(30,87,153,0.8) 15%, rgba(30,87,153,1) 19%, rgba(30,87,153,1) 20%, rgba(41,137,216,1) 50%, rgba(30,87,153,1) 80%, rgba(30,87,153,1) 81%, rgba(30,87,153,0.8) 85%, rgba(30,87,153,0) 100%); 
+background: -webkit-linear-gradient(top,  rgba(30,87,153,0) 0%,rgba(30,87,153,0.8) 15%,rgba(30,87,153,1) 19%,rgba(30,87,153,1) 20%,rgba(41,137,216,1) 50%,rgba(30,87,153,1) 80%,rgba(30,87,153,1) 81%,rgba(30,87,153,0.8) 85%,rgba(30,87,153,0) 100%);
+background: linear-gradient(to bottom,  rgba(30,87,153,0) 0%,rgba(30,87,153,0.8) 15%,rgba(30,87,153,1) 19%,rgba(30,87,153,1) 20%,rgba(41,137,216,1) 50%,rgba(30,87,153,1) 80%,rgba(30,87,153,1) 81%,rgba(30,87,153,0.8) 85%,rgba(30,87,153,0) 100%); 
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#001e5799', endColorstr='#001e5799',GradientType=0 );
 
 }
 
@@ -64,7 +66,6 @@ form {
   position: relative;
 }
 
-/* Lists */
 ul {
   margin: 0;
   padding: 0;
@@ -119,16 +120,16 @@ header .hide-completed {
 }
 
 
-/* Fancy button */
 .button {
     display: inline-block;
-    margin: 10px;
+    padding: 30px;
+    margin: 30px;
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
     border-radius: 8px;
-    -webkit-box-shadow:    0 8px 0 #c5376d, 0 15px 20px rgba(0, 0, 0, .35);
-    -moz-box-shadow: 0 8px 0 #c5376d, 0 15px 20px rgba(0, 0, 0, .35);
-    box-shadow: 0 8px 0 #c5376d, 0 15px 20px rgba(0, 0, 0, .35);
+    -webkit-box-shadow:    0 8px 0 #0066ff, 0 15px 20px rgba(0, 0, 0, .35);
+    -moz-box-shadow: 0 8px 0 #0066ff, 0 15px 20px rgba(0, 0, 0, .35);
+    box-shadow: 0 8px 0 #0066ff, 0 15px 20px rgba(0, 0, 0, .35);
     -webkit-transition: -webkit-box-shadow .1s ease-in-out;
     -moz-transition: -moz-box-shadow .1s ease-in-out;
     -o-transition: -o-box-shadow .1s ease-in-out;
@@ -140,8 +141,8 @@ header .hide-completed {
 
 .button span {
     display: inline-block;
-    padding: 20px 30px;
-    background-color: #ec528d;
+    padding: 30px;
+    background-color: #0066ff;
     background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(hsla(338, 90%, 80%, .8)), to(hsla(338, 90%, 70%, .2)));
     background-image: -webkit-linear-gradient(hsla(338, 90%, 80%, .8), hsla(338, 90%, 70%, .2));
     background-image: -moz-linear-gradient(hsla(338, 90%, 80%, .8), hsla(338, 90%, 70%, .2));
@@ -162,14 +163,14 @@ header .hide-completed {
 }
 
 .button:hover span {
-    background-color: #ec6a9c;
+    background-color: #0066ff;
     text-shadow: 0 -1px 1px rgba(175, 49, 95, .9), 0 0 5px rgba(255, 255, 255, .8);
 }
 
 .button:active, .button:focus {
-    -webkit-box-shadow:    0 8px 0 #c5376d, 0 12px 10px rgba(0, 0, 0, .3);
-    -moz-box-shadow: 0 8px 0 #c5376d, 0 12px 10px rgba(0, 0, 0, .3);
-    box-shadow:    0 8px 0 #c5376d, 0 12px 10px rgba(0, 0, 0, .3);
+    -webkit-box-shadow:    0 8px 0 #0066ff, 0 12px 10px rgba(0, 0, 0, .3);
+    -moz-box-shadow: 0 8px 0 #0066ff, 0 12px 10px rgba(0, 0, 0, .3);
+    box-shadow:    0 8px 0 #0066ff, 0 12px 10px rgba(0, 0, 0, .3);
 }
 
 .button:active span {
@@ -181,21 +182,24 @@ header .hide-completed {
 
 html *
 {
-   font-size: 1.2em;
-   font-family: 'Pacifico', Arial, sans-serif !important;
+   font-size: 1.2em !important;
+   font-family: "Times New Roman", Times, serif !important;
 }
+
+input[type=number]{
+    width: 60px;
+    height: 30px;
+} 
 
 .center {
    vertical-align: top;
-   /*position: relative;
-   left: 50%;
-   margin-left: -98px;
-   margin-top: 10px;*/
 }
 
 .pic {
    position: relative;
    left: 50%;
    margin-left: -640px;
-   margin-top: 10px;
+   margin-top: -15%;
 }
+
+*/

@@ -4,11 +4,16 @@ import { regression } from"./regression.js";
 
 //External function that handles all the mathematical fitting, and such
 //Right now, we log all the patterns it finds
-find_patterns = function(canvas) {
-  var _lin_col = "rgba(0, 200, 50, .7)"
-  var _qua_col = "rgba(0, 200, 200, .7)"
-  var _log_col = "rgba(0, 20, 170, .5)"
-	var i, j;
+find_patterns = function(canvas, _color, _slop) {
+  var i, j;
+  var arr_color = [];
+  for (i = 0; i < 3; ++i) {
+      arr_color.push(parseInt(_color.substring(2 * i + 1, 2 * i + 3), 16));
+  }
+  console.log(arr_color);
+  var _lin_col = "rgba(0, 200, 50, .7)";
+  var _qua_col = "rgba(0, 200, 200, .7)";
+  var _log_col = "rgba(0, 20, 170, .5)";
   //Ge context from canvas
 	var context = canvas.getContext('2d');
   //Get the raw data to search
@@ -24,14 +29,17 @@ find_patterns = function(canvas) {
 
   //Loop through
 	for (i = 0; i < data.length; i += 4) { //RGBA format R, G, B, A, R, G, B, A, so we have to skip
+
     //Pixel arra if it were not in multiples of four
 		var _pix = Math.floor(i / 4);
     //Read in varaibles 
 		var r = data[i];
 		var g = data[i+1];
 		var b = data[i+2];
+    var _cur_color = [r, g, b];
     //See if it is mostly red
-		if (1.5 * r > g + b && r > 80) {
+
+		if (is_close_color(arr_color, _cur_color, _slop)) {
 			var _x = Math.floor(_pix % width);
 			var _y = Math.floor(_pix / width);
       //By default, we want to create a new point in the arrays, but we should take the highest value
@@ -58,9 +66,9 @@ find_patterns = function(canvas) {
 				red_x.push(_x);
 				red_y.push(_y);
 			}
+      continue;
 		} else {
-      //We dim all others just a bit
-      data[i + 3] = 0;
+      data[i + 3] = 120;
     }
 	}
 	//Line of best fit ax + b = y
@@ -69,32 +77,18 @@ find_patterns = function(canvas) {
     _data_format.push([red_x[i], red_y[i]]);
   }
   //var _lin_fit = regression('line', _data_format, 1);
-  var _qua_fit = regression('pol', _data_format, 2);
+  var _qua_fit = regression('pol', _data_format, 8);
   /*console.log("Linear Fit: ");
   console.log(_lin_fit);*/
-  console.log("Quadratic Fit: ");
+  console.log("Poly Fit: ");
   console.log(_qua_fit);
+
+
   imageData.data = data;
 
-  /*context.beginPath();
+  context.putImageData(imageData, 0, 0);
 
-  context.lineWidth = 6;
-  context.setLineDash([10, 4]);
-
-
-  context.strokeStyle = _lin_col;
-
-  var x, _ev_l, _ev;
-  _ev_l = _lin_fit.equation[0] * (c) + _lin_fit.equation[1];
-  for (x = c; x < width; x += c) {
-    _ev = _lin_fit.equation[0] * (x + c) + _lin_fit.equation[1];
-    context.moveTo(x, _ev_l);
-    context.lineTo(x, _ev);
-    context.stroke();
-    _ev_l = _ev;
-  }*/
-
-  var c = 1;
+  var c = 2;
 
 
   context.strokeStyle = _lin_col;
@@ -102,126 +96,37 @@ find_patterns = function(canvas) {
   context.beginPath();
   //context.moveTo(0, 0);
 
-  _ev_l = eval_qua(_qua_fit.equation, 0);
+  _ev_l = eval_pol(_qua_fit.equation, 0);
   for (var x = c; x < width; x += c) {
-    _ev = eval_qua(_qua_fit.equation, x);
+    _ev = eval_pol(_qua_fit.equation, x);
     context.moveTo(x, _ev_l);
     context.lineTo(x, _ev);
     context.stroke();
     _ev_l = _ev;
   }
-
-  /*for (x = c; x < width; ++x) {
-    _ev = _qua_fit.equation[0] * (x + c) * (x + c) + _qua_fit.equation[1] * (x + c) + _qua_fit.equation[2];
-    context.moveTo(x, _ev_l);
-    context.lineTo(x, _ev);
-    context.stroke();
-    _ev_l = _ev;
-  }*/
-
-  /*var _fit = regress_leastsquares_linear(red_x, red_y);
-  var _fit_log = regress_leastsquares_log(red_x, red_y);
-  //We put the altered data back in
-  imageData.data = data;
-  //We write to the canvas
-	context.putImageData(imageData, 0, 0);
-  //To draw a line through the image
-  context.beginPath();
-  //Calculate f(0) and f(max) and draw a line through
-  var begin = _fit.a * 0 + _fit.b;
-  var end = _fit.a * width + _fit.b;
-  context.setLineDash([10, 4]);
-  context.strokeStyle = _lin_col;
-  //A bit thick
-  context.lineWidth = 6;
-  //Move it and fill
-  context.moveTo(0, begin);
-  context.lineTo(width, end);
-  context.stroke();
-  context.strokeStyle = _log_col;
-  context.setLineDash([10, 4]);
-  context.beginPath();
-  var z = 0;
-  var _s, _e;
-  var _c = 14;
-  _s = _fit_log.a * Math.log(z + 1) + _fit_log.b;
-  for (z = _c; z < width; z += _c) {
-    _e = _fit_log.a * Math.log(z + _c + 1) + _fit_log.b;
-    context.moveTo(z - _c, _s);
-    context.lineTo(z, _e);
-    context.stroke();
-    _s = _fit_log.a * Math.log(z + _c) + _fit_log.b;
-  }*/
 }
 
-function eval_qua(coef, x) {
-  return coef[0] + coef[1] * x + coef[2] * x * x;
-}
-
-//Line of best fit, classic method  
-function regress_leastsquares_linear(X, Y) {
-   	var sum_x = 0;
-   	var sum_y = 0;
-   	var sum_xy = 0;
-   	var sum_x2 = 0;
-   	var l = X.length;
-   	for (var i = 0; i < l; ++i) {
-   		sum_x += X[i];
-   		sum_y += Y[i];
-   		sum_xy += X[i] * Y[i];
-   		sum_x2 += X[i] * X[i];
-   	}
-   	var _div = (l * sum_x2 - sum_x * sum_x);
-   	var a, b = 0;
-   	a = (l * sum_xy - sum_x * sum_y) / _div;
-   	b = (sum_y * sum_x2 - sum_x * sum_xy) / _div;
-    var ss_res = 0;
-    var ss_tot = 0;
-    var y_m = 0;
-    for (var i = 0; i < l; ++i) {
-      y_m += Y[i];
+function is_close_color(rbga, color, slop) {
+  var i;
+  for (i = 0; i < 3; ++i) {
+    if (!(Math.abs(rbga[i] - color[i]) <= slop)) {
+      return false;
     }
-    y_m /= l;
-    for (var i = 0; i < l; ++i) {
-      ss_res += (Y[i] - (a * X[i] + b)) * (Y[i] - (a * X[i] + b));
-      ss_tot += (Y[i] - y_m) * (Y[i] - y_m);
-    }
-   	return {
-   		a: a,
-   		b: b,
-   		r: Math.sqrt(1 - ss_res / ss_tot),
-   	};
+  }
+  return true;
 }
 
-
-//Line of best fit, logarithmic y ~ aln(X) + b
-function regress_leastsquares_log(X, Y) {
-    var ln_X = [];
-    for (var i = 0; i < X.length; ++i) {
-      ln_X.push(Math.log(X[i] + 1));
-    }
-    return regress_leastsquares_linear(ln_X, Y);
+//Evaluates polynomial
+function eval_pol(coef, x) {
+  var sum = 0;
+  var x_i = 1;
+  var i;
+  for (i = 0; i < coef.length; ++i) {
+      sum += x_i * coef[i];
+      x_i *= x;
+  }
+  return sum;
 }
-
-
-/*
-
-Full out regression class I found
-
-*/
-
-/**
-* @license
-*
-* Regression.JS - Regression functions for javascript
-* http://tom-alexander.github.com/regression-js/
-*
-* copyright(c) 2013 Tom Alexander
-* Licensed under the MIT license.
-*
-**/
-
-
 
 
 /*
