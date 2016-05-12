@@ -11,6 +11,7 @@ export function update() {
   var img = new Image();
   var _color = document.getElementById('color').value;
   var _slop = document.getElementById('slop').value;
+  var _pols = document.getElementById('pol').value;
   myCanvas.style.height = 'auto';
 
   img.onload = function(){
@@ -23,15 +24,16 @@ export function update() {
     if (Meteor.Device.isDesktop()) {
       myCanvas.style.width = "55%";
       myCanvas.style.height = 'auto';
-      myCanvas.style.left = ((window.width + width) / 2 + 90) + "px";
+      myCanvas.style.left = ((window.width + width) / 2 + 64) + "px";
       myCanvas.style.top = 180 + "px";
     } else {
       myCanvas.style.width = "95%";
       myCanvas.style.height = 'auto';
-      myCanvas.style.left = ((window.width) / 2 + width / 6 + 8) + "px";
+      //myCanvas.style.left = ((window.width) / 2 + width / 6 + 8) + "px";
+      myCanvas.style.left = (window.width + width) / 2 - 110 + "px";
       myCanvas.style.top = "100px";
     }
-    find_patterns(myCanvas, _color, _slop);
+    find_patterns(myCanvas, _color, _slop, _pols);
   };
   img.src = global_image;
 }

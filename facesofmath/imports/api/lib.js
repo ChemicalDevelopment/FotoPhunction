@@ -4,14 +4,14 @@ import { regression } from"./regression.js";
 
 //External function that handles all the mathematical fitting, and such
 //Right now, we log all the patterns it finds
-find_patterns = function(canvas, _color, _slop) {
+find_patterns = function(canvas, _color, _slop, _pols) {
   var i, j;
   var arr_color = [];
   for (i = 0; i < 3; ++i) {
       arr_color.push(parseInt(_color.substring(2 * i + 1, 2 * i + 3), 16));
   }
   console.log(arr_color);
-  var _pol_col = "rgba(0, 200, 200, 1.0)";
+  var _pol_col = [0, 20, 100, .1];
   //Ge context from canvas
 	var context = canvas.getContext('2d');
   //Get the raw data to search
@@ -74,34 +74,40 @@ find_patterns = function(canvas, _color, _slop) {
   for (i = 0; i < red_x.length; ++i) {
     _data_format.push([red_x[i], red_y[i]]);
   }
-  var _pol_fit = regression('pol', _data_format, 8);
-  console.log("Poly Fit: ");
-  console.log(_pol_fit);
-
 
   imageData.data = data;
 
   context.putImageData(imageData, 0, 0);
 
-  var c = 1;
 
-
-  context.strokeStyle = _pol_col;
+  var _pol_fit = [];
+  for (i = 1; i <= _pols; ++i) {
+    _pol_fit.push(regression('pol', _data_format, i));
+  }
+  console.log("Polynomial Fits: ");
+  console.log(_pol_fit);
 
   context.lineWidth = 6;
 
-  context.beginPath();
-  //context.moveTo(0, 0);
+  var x;
 
-  _ev_l = eval_pol(_pol_fit.equation, 0);
-  for (var x = c; x < width; x += c) {
-    _ev = eval_pol(_pol_fit.equation, x);
-    context.moveTo(x, _ev_l);
-    context.lineTo(x, _ev);
-    context.stroke();
-    _ev_l = _ev;
+  for(i = 0; i < _pols; ++i) {
+    context.strokeStyle = "rgba(" + _pol_col[0] + ", " + _pol_col[1] + ", " + _pol_col[2] + ", " + _pol_col[3] + ")";
+    context.beginPath();
+    _ev_l = eval_pol(_pol_fit[i].equation, 0);
+    for (x = 1; x < width; ++x) {
+      _ev = eval_pol(_pol_fit[i].equation, x);
+      context.moveTo(x - 1, _ev_l);
+      context.lineTo(x, _ev);
+      context.stroke();
+      _ev_l = _ev;
+    }
+    _pol_col[1] = Math.floor(((_pol_col[1] + 100 / _pols) % 256 + 256) % 256);
+    _pol_col[2] = Math.floor(((_pol_col[2] + 155 / _pols) % 256 + 256) % 256);
+    _pol_col[3] = _pol_col[3] + .4 / _pols;
   }
 }
+
 
 function is_close_color(rbga, color, slop) {
   var i;
