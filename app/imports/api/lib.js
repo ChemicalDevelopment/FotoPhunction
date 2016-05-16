@@ -4,7 +4,7 @@ import { regression } from"./regression.js";
 
 //External function that handles all the mathematical fitting, and such
 //Right now, we log all the patterns it finds
-find_patterns = function(canvas, _color, _slop, _pols) {
+find_patterns = function(canvas, _color, _slop) {
   var i, j;
   var arr_color = [];
   for (i = 0; i < 3; ++i) {
@@ -81,8 +81,9 @@ find_patterns = function(canvas, _color, _slop, _pols) {
 
 
   var _pol_fit = [];
-  for (i = 1; i <= _pols; ++i) {
-    _pol_fit.push(regression('pol', _data_format, i));
+  var _todo = [1, 2, 3, 6];
+  for (i = 0; i < _todo.length; ++i) {
+    _pol_fit.push(regression('pol', _data_format, _todo[i]));
   }
   console.log("Polynomial Fits: ");
   console.log(_pol_fit);
@@ -91,7 +92,11 @@ find_patterns = function(canvas, _color, _slop, _pols) {
 
   var x;
 
-  for(i = 0; i < _pols; ++i) {
+  for(i = 0; i < _todo.length; ++i) {
+    _pol_col[0] = 35;
+    _pol_col[1] = 215 - 60 * i;
+    _pol_col[2] = 255 - _pol_col[1];
+    _pol_col[3] = i * .6 / _todo.length + .2;
     context.strokeStyle = "rgba(" + _pol_col[0] + ", " + _pol_col[1] + ", " + _pol_col[2] + ", " + _pol_col[3] + ")";
     context.beginPath();
     _ev_l = eval_pol(_pol_fit[i].equation, 0);
@@ -102,9 +107,6 @@ find_patterns = function(canvas, _color, _slop, _pols) {
       context.stroke();
       _ev_l = _ev;
     }
-    _pol_col[1] = Math.floor(((_pol_col[1] + 100 / _pols) % 256 + 256) % 256);
-    _pol_col[2] = Math.floor(((_pol_col[2] + 155 / _pols) % 256 + 256) % 256);
-    _pol_col[3] = _pol_col[3] + .4 / _pols;
   }
 }
 

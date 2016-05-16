@@ -11,7 +11,6 @@ export function update() {
   var img = new Image();
   var _color = document.getElementById('color').value;
   var _slop = document.getElementById('slop').value;
-  var _pols = document.getElementById('pol').value;
   myCanvas.style.height = 'auto';
 
   img.onload = function(){
@@ -33,7 +32,7 @@ export function update() {
       myCanvas.style.left = (window.width + width) / 2 - 110 + "px";
       myCanvas.style.top = "100px";
     }
-    find_patterns(myCanvas, _color, _slop, _pols);
+    find_patterns(myCanvas, _color, _slop);
   };
   img.src = global_image;
 }

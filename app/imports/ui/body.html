@@ -1,6 +1,6 @@
 <body>
   <nav class="navbar navbar-inverse">
-    <a class="navbar-brand" href="#">Faces Of Math</a>
+    <a class="navbar-brand" href="#">RegressionApp</a>
   </nav>
   {{> example }}
 </body>
@@ -8,16 +8,14 @@
 
 
 <template name="example">
-  <button class="takePhoto center">
+  <button class="takePhoto btn btn-primary">
     <span>Take A Photo</span>
   </button><br><br>
   <input type="color" id="color" value="#1c1c1c"><br>
 
   <div class="settings-text">Slop: </div><input size="10" type="number" id="slop" value="50"><br>
 
-  <div class="settings-text">Curves: </div><input size="10" type="number" id="pol" value="5"><br>
-
-  <button class="center">
+  <button class="center btn btn-info">
     <span>Update Settings</span>
   </button>
   <canvas id="canv" class="pic"></canvas>
