@@ -29,6 +29,7 @@ body {
 }
 
 input[type=number]{
+    margin-bottom: 2px;
     width: 75px;
     height: 30px;
 } 
