@@ -5,20 +5,20 @@
   {{> example }}
 </body>
 
-
-
 <template name="example">
-  <button class="takePhoto btn btn-primary">
+  <button class="takePhoto center btn btn-primary btn-md">
     <span>Take A Photo</span>
   </button><br><br>
   <input type="color" id="color" value="#1c1c1c"><br>
 
   <div class="settings-text">Slop: </div><input size="10" type="number" id="slop" value="50"><br>
 
-  <button class="center btn btn-info">
+  <button class="center btn btn-primary btn-md">
     <span>Update Settings</span>
   </button>
-  <canvas id="canv" class="pic"></canvas>
+  {{> canvas}}
 </template>
 
- 
+<template name="canvas">
+  <canvas id="canv" class="pic"></canvas>
+</template>

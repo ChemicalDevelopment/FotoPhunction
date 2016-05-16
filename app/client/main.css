@@ -1,8 +1,10 @@
 /* CSS */
 body {
-  background-color: #315481;
-  background-image: linear-gradient(to bottom, #315481, #918e82 100%);
+  /*background-color: #315481;
+  background-image: linear-gradient(to bottom, #40af9f, #c40000 100%);
   background-attachment: fixed;
+  
+  opacity: 1;
 
   position: absolute;
   top: 0;
@@ -13,7 +15,12 @@ body {
   padding: 0;
   margin: 0;
 
-  font-size: 14px;
+  font-size: 14px;*/
+  
+  
+
+  background-color: rgba(20, 80, 120, .25); /* fallback for old browsers */
+          
 }
 
 .loginButton{
@@ -21,13 +28,8 @@ body {
      background-color: cyan;
 }
 
-html *
-   font-size: 1.4em !important;
-   font-family: "Times New Roman", Times, serif !important;
-}
-
 input[type=number]{
-    width: 60px;
+    width: 75px;
     height: 30px;
 } 
 
@@ -47,8 +49,4 @@ input[type="color"] {
 }
 input[type="number"] {
     height: 30px;
-}
-
-.settings-text {
-  color: white;
 }

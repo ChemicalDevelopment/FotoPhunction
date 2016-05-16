@@ -41,7 +41,7 @@ export function update() {
 Template.example.events({
   'click .takePhoto': function(event, template) {
         //We ask them for a picture
-        var camop = {};
+        var camop = {  };
         MeteorCamera.getPicture(camop, function (error, data) {
            if (!error) { //no errors
             global_image = data;
@@ -53,4 +53,10 @@ event.preventDefault();
   'click .center': function(event, template) {
     update();
 }
+});
+
+Template.canvas.events({
+  'click .pic': function(event, template) {
+    update();
+  }
 });
