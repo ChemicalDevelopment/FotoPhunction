@@ -1,7 +1,7 @@
 {
-  "name": "facesofmath",
-  "version": "1.3.0",
-  "description": "Finds patterns by drawing in red",
+  "name": "RegressionApp",
+  "version": "0.0.1",
+  "description": "Finds lines of best fit in your drawing, with selectable marker color",
   "scripts": {
     "start": "meteor --settings settings-development.json",
     "staging": "modulus env set METEOR_SETTINGS \"$(cat settings-staging.json)\" -p 'App - Staging' && modulus deploy -f -p 'App - Staging'",
