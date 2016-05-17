@@ -1,5 +1,5 @@
 {
-  "name": "RegressionApp",
+  "name": "FotoPhunction",
   "version": "0.0.1",
   "description": "Finds lines of best fit in your drawing, with selectable marker color",
   "scripts": {
