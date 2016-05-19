@@ -11,7 +11,6 @@ export function update() {
   var img = new Image();
   var _color = document.getElementById('color').value;
   var _slop = document.getElementById('slop').value;
-  myCanvas.style.height = 'auto';
 
   img.onload = function(){
     height = img.height;
@@ -23,8 +22,9 @@ export function update() {
     if (Meteor.Device.isDesktop()) {
       var screenwidth = window.innerWidth || document.body.clientWidth;
       myCanvas.style.height = 'auto';
-      myCanvas.style.left = ((screenwidth - width - (120 + 2 * 8)) / 2) + "px";
-      myCanvas.style.top = "-225px";
+      myCanvas.style.left = (screenwidth - width) / 2 + "px";
+      myCanvas.style.paddingTop = "5%";
+      myCanvas.style.visibility = "visible";
     } else {
       myCanvas.style.height = 'auto';
       //myCanvas.style.left = ((window.width) / 2 + width / 6 + 8) + "px";
@@ -81,10 +81,12 @@ event.preventDefault();
 });
 
 
+/*
+
 Template.canvas.events({
   'click': function(e, template) {
       if (true) {
-          var ca = document.getElementById("canv")
+        var ca = document.getElementById("canv");
         var pos = findPos(ca);
         var x = e.pageX - pos.x;
         var y = e.pageY - pos.y;
@@ -97,3 +99,5 @@ Template.canvas.events({
       }
     }
 });
+
+*/

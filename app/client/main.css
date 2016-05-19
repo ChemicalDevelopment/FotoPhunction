@@ -48,10 +48,12 @@ input[type=number]{
 }
 
 .pic {
-  position: relative;
-   /* left: 50%; */
-   /*margin-left: -640px;
-   margin-top: -15%;*/
+  /*position: relative;*/
+  visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
 }
 
 /*
