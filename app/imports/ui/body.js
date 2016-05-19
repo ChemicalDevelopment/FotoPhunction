@@ -11,6 +11,9 @@ export function update() {
   var img = new Image();
   var _color = document.getElementById('color').value;
   var _slop = document.getElementById('slop').value;
+  if (!_slop) {
+    _slop = 50;
+  }
 
   img.onload = function(){
     height = img.height;
