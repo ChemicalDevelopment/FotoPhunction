@@ -21,9 +21,10 @@ export function update() {
     ctx.drawImage(img, 0, 0);
     if (Meteor.Device.isDesktop()) {
       var screenwidth = window.innerWidth || document.body.clientWidth;
-      myCanvas.style.height = 'auto';
-      myCanvas.style.left = (screenwidth - width) / 2 + "px";
-      myCanvas.style.paddingTop = "5%";
+      myCanvas.style.maxWidth = 100 * width / screenwidth+ "%"
+      //myCanvas.style.maxHeight = 'auto';
+      myCanvas.style.left = 100 * ((screenwidth - width) / 2) / screenwidth  + "%";
+      myCanvas.style.top = "-210px";
       myCanvas.style.visibility = "visible";
     } else {
       myCanvas.style.height = 'auto';
@@ -80,9 +81,6 @@ event.preventDefault();
 }
 });
 
-
-/*
-
 Template.canvas.events({
   'click': function(e, template) {
       if (true) {
@@ -99,5 +97,3 @@ Template.canvas.events({
       }
     }
 });
-
-*/
