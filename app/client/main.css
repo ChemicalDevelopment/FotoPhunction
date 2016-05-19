@@ -23,31 +23,68 @@ body {
           
 }
 
-.loginButton{
-     width: 100px;
-     background-color: cyan;
-}
+/*
 
 input[type=number]{
     margin-bottom: 2px;
-    width: 75px;
+    width: 100px;
     height: 30px;
 } 
+*/
+
 
 .center {
    vertical-align: top;
 }
 
-.pic {
-   position: relative;
-   left: 50%;
-   margin-left: -640px;
-   margin-top: -15%;
+/* Trigger for updating canvas */
+.updateTrigger {
+    
 }
 
+/* Trigger for using color picker */
+.colorpickerTrigger {
+    
+}
+
+.pic {
+  position: relative;
+   /* left: 50%; */
+   /*margin-left: -640px;
+   margin-top: -15%;*/
+}
+
+/*
 input[type="color"] {
     height: 30px;
 }
 input[type="number"] {
-    height: 30px;
+}
+*/
+
+.settings {
+    width: 120px !important;
+    height: 35px !important;
+    padding: 6px !important;
+    margin: 10px !important;
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;  
+}
+
+:-ms-input-placeholder {  
+   text-align: center; 
+}
+
+input { 
+    text-align: center; 
 }

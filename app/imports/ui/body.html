@@ -6,19 +6,40 @@
 </body>
 
 <template name="example">
-  <button class="takePhoto center btn btn-primary btn-md">
+  
+  <button class="takePhoto center btn btn-primary btn-md settings">
     <span>Take A Photo</span>
-  </button><br/><br/>
-  <input type="color" id="color" value="#1c1c1c"><br/>
+  </button>
+  
+  <br/>
+  
+  <input type="color" id="color" value="#c4000c" class="settings btn btn-info">
+  
+  <br/>
+  
+  <!--
+  
+  <button class="center btn btn-primary btn-md colorpickerTrigger settings">
+    <span>Pick A Color</span>
+  </button>
+  
+  <br/>
+    
+  -->
 
-  <div class="settings-text">Slop: <input size="10" type="number" id="slop" value="50"></div><br/>
+  <input size="10" type="number" id="slop" class="settings btn btn-info" placeholder="Uncertainty">
+  
+  <br/>
 
-  <button class="center btn btn-primary btn-md">
+  <button class="center btn btn-success btn-md updateTrigger settings">
     <span>Update Settings</span>
   </button>
+  
+  <br/>
+  
   {{> canvas}}
 </template>
 
 <template name="canvas">
-  <canvas id="canv" class="pic"></canvas>
+  <canvas id="canv" class="pic updateTrigger"></canvas>
 </template>
