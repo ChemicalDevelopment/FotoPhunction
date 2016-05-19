@@ -19,18 +19,19 @@ export function update() {
     myCanvas.width = width;
     myCanvas.height = height;
     ctx.drawImage(img, 0, 0);
+    var screenwidth = window.innerWidth || document.body.clientWidth;
     if (Meteor.Device.isDesktop()) {
-      var screenwidth = window.innerWidth || document.body.clientWidth;
       myCanvas.style.maxWidth = 100 * width / screenwidth+ "%"
       //myCanvas.style.maxHeight = 'auto';
       myCanvas.style.left = 100 * ((screenwidth - width) / 2) / screenwidth  + "%";
       myCanvas.style.top = "-210px";
       myCanvas.style.visibility = "visible";
     } else {
-      myCanvas.style.height = 'auto';
-      //myCanvas.style.left = ((window.width) / 2 + width / 6 + 8) + "px";
-      //myCanvas.style.left = (window.width + width) / 2 - 110 + "px";
-      //myCanvas.style.top = "100px";
+      myCanvas.style.width = "100%";
+      //myCanvas.style.maxHeight = 'auto';
+      //myCanvas.style.left = 100 * ((screenwidth - width) / 2) / screenwidth  + "%";
+      //myCanvas.style.top = "-210px";
+      myCanvas.style.visibility = "visible";
     }
     find_patterns(myCanvas, _color, _slop);
   };
