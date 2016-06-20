@@ -4,11 +4,10 @@
   </nav>
   {{> example }}
   <br/>
-  {{> canvas}}
+  {{> canvas }}
 </body>
 
-<template name="example">
-  
+<template name="example">  
   <button class="takePhoto center btn btn-primary btn-md settings">
     <span>Take A Photo</span>
   </button>
@@ -34,8 +33,9 @@
   <br/>
 
   <button class="center btn btn-success btn-md updateTrigger settings">
-    <span>Update Settings</span>
+    <span>Graph</span>
   </button>
+  <canvas id="canv_zoom" class="canv_zoom"></canvas>
 </template>
 
 <template name="canvas">

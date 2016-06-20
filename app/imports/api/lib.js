@@ -5,6 +5,9 @@ import { regression } from"./regression.js";
 //External function that handles all the mathematical fitting, and such
 //Right now, we log all the patterns it finds
 find_patterns = function(canvas, _color, _slop) {
+  if (_slop == null) {
+    _slop = 30;
+  }
   var i, j;
   var arr_color = [];
   for (i = 0; i < 3; ++i) {
@@ -66,7 +69,7 @@ find_patterns = function(canvas, _color, _slop) {
 			}
       continue;
 		} else {
-      data[i + 3] = 120;
+      data[i + 3] = 200;
     }
 	}
 	//Line of best fit ax + b = y
