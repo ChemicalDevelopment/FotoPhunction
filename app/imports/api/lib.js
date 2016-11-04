@@ -6,7 +6,7 @@ import { regression } from"./regression.js";
 //Right now, we log all the patterns it finds
 find_patterns = function(canvas, _color, _slop) {
   if (_slop == null) {
-    _slop = 30;
+    _slop = 20;
   }
   var i, j;
   var arr_color = [];
@@ -84,7 +84,7 @@ find_patterns = function(canvas, _color, _slop) {
 
 
   var _pol_fit = [];
-  var _todo = [1, 2, 3, 6];
+  var _todo = [1, 3];
   for (i = 0; i < _todo.length; ++i) {
     _pol_fit.push(regression('pol', _data_format, _todo[i]));
   }
@@ -111,6 +111,44 @@ find_patterns = function(canvas, _color, _slop) {
       _ev_l = _ev;
     }
   }
+  var coords = getCoords();
+  console.log(coords);
+  var transformed_pol = tranform_pol(_data_format, coords.xmin, coords.xmax, coords.ymin, coords.ymax);
+  console.log(transformed_pol);
+  document.getElementById("equation").value = pol_string(transformed_pol.equation);
+}
+
+function pol_string(_pol) {
+  var pol = _pol;
+  for (var j = 0; j < pol.length; ++j) {
+     pol[j] = pol[j].toFixed(2);
+  }
+  var res = "";
+  for (var i = pol.length - 1; i >= 2; --i) {
+    var c = pol[i];
+    var term = "";
+    if (c > 0) {
+      if (i == pol.length - 1) {
+        term = c + "x^" + i;
+      } else {
+        term = "+" + c + "x^" + i;
+      }
+    } else if (c < 0) {
+      term = "-" + -c + "x^" + i;
+    }
+    res = res + term;
+  }
+  if (pol[1] > 0) {
+    res = res + "+" + pol[1] + "x"
+  } else if (pol[1] < 0) {
+    res = res + "-" + -pol[1] + "x"
+  }
+  if (pol[0] > 0) {
+    res = res + "+" + pol[0]
+  } else if (pol[0] < 0) {
+    res = res + "-" + -pol[0]
+  }
+  return res;
 }
 
 
@@ -124,6 +162,44 @@ function is_close_color(rbga, color, slop) {
   return true;
 }
 
+//Returns polynomial that is tranformed from pixel coords into raw x and y (supplied by user)
+function tranform_pol(_data_format, xmin = 0, xmax = 1, ymin = 0, ymax = 1, degree = 3) {
+  var x_c = [xmin, (xmax - xmin) / width];
+  var y_c = [ymin, (ymax - ymin) / height];
+  for (var i = 0; i < _data_format.length; ++i) {
+    _data_format[i] = [x_c[1] * _data_format[i][0] + x_c[0], ymax - (y_c[1] * _data_format[i][1] + y_c[0])];
+  }
+  return regression('pol', _data_format);
+}
+
+function add_pol(p1, p2) {
+  var max = Math.min(p1.length, p2.length);
+  var ret = [];
+  ret.length = Math.max(p1.length, p2.length);
+  for (var i = 0; i < max; ++i) {
+    ret[i] = p1[i] + p2[i];
+  }
+  if (p1.length > p2.length) {
+    for (var j = p2.length; j < p1.length; ++j) {
+      ret[j] = p1[j];
+    }
+  } else if (p2.length > p1.length) {
+    for (var k = p1.length; k < p2.length; ++k) {
+      ret[k] = p2[k];
+    }
+  }
+  return ret;
+}
+
+
+function scale_pol(pol, a) {
+  var scaled = pol;
+  for (var i = 0; i < pol.length; ++i) {
+    scaled[i] *= a;
+  }
+  return scaled;
+}
+
 //Evaluates polynomial
 function eval_pol(coef, x) {
   var sum = 0;
@@ -134,6 +210,26 @@ function eval_pol(coef, x) {
       x_i *= x;
   }
   return sum;
+}
+
+function getCoords() {
+  var inp = document.getElementById("coords").value;
+  if (!inp) {
+    inp = "(0,0);(1,1)"
+  }
+  inp = inp.replace(/ /g, "");
+  inp = inp.replace(/\(/g, "")
+  inp = inp.replace(/\)/g, "")
+  var point = inp.split(";");
+  point[0] = point[0].split(",");
+  point[1] = point[1].split(",");
+  var ret = {};
+  ret.xmin = parseFloat(point[0][0]);
+  ret.ymin = parseFloat(point[0][1]);
+  ret.xmax = parseFloat(point[1][0]);
+  console.log(point[1]);
+  ret.ymax = parseFloat(point[1][1]);
+  return ret;
 }
 
 

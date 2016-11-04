@@ -58,9 +58,12 @@ input[type=number]{
 .canv_zoom {
   /*visibility: hidden;*/
   position: relative;
-  top: -156px;
-  left: 50px;
+  top: -265px;
+  left: 155px;
   z-index: 999;
+  width: 200px;
+  height: 200px;
+  
 }
 
 /*
@@ -76,6 +79,32 @@ input[type="number"] {
     height: 35px !important;
     padding: 6px !important;
     margin: 10px !important;
+}
+
+
+@media (min-width:320px) {
+    .settings-equation {
+        width: 160px !important;
+        height: 35px !important;
+        padding: 6px !important;
+        margin: 10px !important;
+        float: right;
+    }
+}
+@media (min-width:600px) {
+    .settings-equation {
+        width: 150px !important;
+        height: 35px !important;
+        padding: 6px !important;
+        margin: 10px !important;
+        float: none;
+    }
+}
+
+
+
+.extra-right {
+    padding-left: 180px;
 }
 
 ::-webkit-input-placeholder {

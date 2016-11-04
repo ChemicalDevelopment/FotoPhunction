@@ -17,25 +17,21 @@
   <input type="color" id="color" value="#c4000c" class="settings btn btn-info">
   
   <br/>
-  
-  <!--
-  
-  <button class="center btn btn-primary btn-md colorpickerTrigger settings">
-    <span>Pick A Color</span>
-  </button>
-  
-  <br/>
-    
-  -->
 
   <input size="10" type="number" id="slop" class="settings btn btn-info" placeholder="Uncertainty">
+    
+  <br/>
+  
+  <input size="10" type="text" id="coords" class="settings btn btn-info" placeholder="Coords">
   
   <br/>
-
+  <div>
   <button class="center btn btn-success btn-md updateTrigger settings">
     <span>Graph</span>
   </button>
-  <canvas id="canv_zoom" class="canv_zoom"></canvas>
+  <input size="14" type="text" id="equation" class="settings settings-equation btn btn-info" placeholder="Click Graph To Find Out Equation">
+  </div>
+  <canvas id="canv_zoom" class="canv_zoom" width="100" height="100"></canvas>
 </template>
 
 <template name="canvas">
